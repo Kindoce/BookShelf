@@ -16,7 +16,6 @@ app.get('/fetchUrl', async (req, res) => {
     const url = req.query.url;
     try {
         const response = await axios.get(url);
-        console.log(url);
         res.send(response.data);
     } catch (error) {
         res.status(404).send({ message: error.message });
@@ -40,7 +39,6 @@ app.post('/postData', async (req, res) => {
     const url = req.query.url;
     try {
         const response = await axios.get(url);
-        console.log(url);
         const html = response.data;
         const dom = new JSDOM(html);
         const $ = require('jquery')(dom.window);
@@ -70,7 +68,6 @@ app.post('/postChapter', async (req, res) => {
     const url = req.query.url;
     try {
         const response = await axios.get(url);
-        console.log(url);
         const html = response.data;
         const dom = new JSDOM(html);
         const $ = require('jquery')(dom.window);
@@ -93,7 +90,6 @@ app.post('/postChapterContent', async (req, res) => {
     const url = req.query.url;
     try {
         const response = await axios.get(url);
-        console.log(url);
         const html = response.data;
         const dom = new JSDOM(html);
         const $ = require('jquery')(dom.window);
@@ -112,7 +108,6 @@ app.post('/saveBook', async (req, res) => {
         let obj = JSON.parse(jsonData);
         let found = false;
         let item = {};
-        console.log(val);
         for (let i = 0; i < obj.length; i++) {
             if (obj[i].name === data.name) {
                 found = true;

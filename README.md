@@ -8,10 +8,8 @@ npm install
 ### Compiles and hot-reloads for development
 
 ```
-#启动后端
-node server.js
-#启动前端
-npm run serve
+#启动
+npm run dev
 ```
 
 在浏览器中打开http://localhost:8080  即可访问
