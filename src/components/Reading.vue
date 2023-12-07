@@ -19,7 +19,11 @@
         @click="toggleSetting"
       />
     </div>
-    <div v-if="showDirectory" class="directory">
+    <div
+      v-if="showDirectory"
+      class="directory"
+      v-click-outside="toggleDirectory"
+    >
       <!-- Directory content here -->
       <div style="height: 90vh; overflow-y: auto">
         <el-table
@@ -51,6 +55,7 @@
       :showSetting="showSetting"
       ref="setting"
       @update="handleUpdateData"
+      v-click-outside="toggleSetting"
     ></ReadSet>
     <div
       class="content"
@@ -81,11 +86,15 @@
 
 <script>
 import ReadSet from "./ReadSet.vue";
+import vClickOutside from "v-click-outside";
 export default {
   name: "Reading",
   components: {
     // Your components here
     ReadSet,
+  },
+  directives: {
+    clickOutside: vClickOutside.directive,
   },
   data() {
     return {
@@ -340,8 +349,8 @@ export default {
 .directory {
   position: absolute;
   top: 40px;
-  right: 0;
-  width: 100%; /* adjust as needed */
+  left: 0;
+  width: 250px; /* adjust as needed */
   height: 100%; /* adjust as needed */
   background-color: rgba(10, 10, 10, 0.1); /* semi-transparent background */
   /* other styles as needed */

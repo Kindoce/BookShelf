@@ -85,6 +85,15 @@
       >
       </el-color-picker>
     </div>
+    <div
+      class="color-picker-container"
+      style="display: flex; justify-content: center; align-items: center"
+    >
+      <span class="demonstration" style="margin-right: 30px">恢复默认设置</span>
+      <el-button type="danger" @click="reFlush" round size="samll"
+        >恢复</el-button
+      >
+    </div>
   </div>
 </template>
 
@@ -160,6 +169,14 @@ export default {
   },
   methods: {
     // Your methods here
+    reFlush() {
+      this.font_size = 18;
+      this.padding_size = 10;
+      this.font_family = "SimSun";
+      this.bg_color = "#ffffff";
+      this.zt_color = "#000000";
+      this.add = false;
+    },
   },
   mounted() {
     // Your mounted hook code here

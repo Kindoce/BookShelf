@@ -11,7 +11,7 @@
       style="padding-left: 5px; margin-right: auto; width: 1200px"
       v-show="tableData.length > 0"
     >
-      <el-table-column prop="coverUrl" label="封面" width="90">
+      <el-table-column prop="coverUrl" label="封面" width="90" align="center">
         <template slot-scope="scope">
           <!-- <img :src="scope.row.coverUrl" alt=""  /> -->
           <img
@@ -26,7 +26,7 @@
           <div @click="nameClickHandler(scope.row)">{{ scope.row.name }}</div>
         </template></el-table-column
       >
-      <el-table-column prop="author" label="作者" width="120">
+      <el-table-column prop="author" label="作者" width="120" align="center">
       </el-table-column>
       <!-- <el-table-column prop="bookUrl" label="书Url" width="250">
       </el-table-column> -->
