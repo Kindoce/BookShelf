@@ -4,7 +4,6 @@
       <el-aside
         width="200px"
         :style="{
-          backgroundColor: asideBackgroundColor,
           width: asideWidth,
           height: '97vh',
         }"
@@ -29,12 +28,11 @@ export default {
     Aside,
   },
   data() {
-    return { asideWidth: "", asideBackgroundColor: "" };
+    return { asideWidth: "" };
   },
   methods: {
     updateAside(data) {
       this.asideWidth = data.width;
-      this.asideBackgroundColor = data.backgroundColor;
     },
   },
 };

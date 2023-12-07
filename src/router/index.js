@@ -5,6 +5,7 @@ const routes = [
     {
         path: '/',
         name: 'index',
+        redirect: '/bookshelf',
         component: () => import('../components/Index'),
         children: [
             {

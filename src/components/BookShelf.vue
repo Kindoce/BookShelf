@@ -8,7 +8,8 @@
       border
       :header-cell-style="{ background: '#f3f6fd', color: '#555' }"
       size="small"
-      style="padding-left: 5px; margin-right: auto; width: 1100px"
+      style="padding-left: 5px; margin-right: auto; width: 1200px"
+      v-show="tableData.length > 0"
     >
       <el-table-column prop="coverUrl" label="封面" width="90">
         <template slot-scope="scope">
@@ -25,14 +26,14 @@
           <div @click="nameClickHandler(scope.row)">{{ scope.row.name }}</div>
         </template></el-table-column
       >
-      <el-table-column prop="author" label="作者" width="150">
+      <el-table-column prop="author" label="作者" width="120">
       </el-table-column>
       <!-- <el-table-column prop="bookUrl" label="书Url" width="250">
       </el-table-column> -->
       <el-table-column
         prop="lastChapter"
         label="最后一章"
-        width="270"
+        width="250"
         align="center"
       >
       </el-table-column>
@@ -52,6 +53,19 @@
         align="center"
       >
       </el-table-column>
+      <el-table-column prop="operate" label="操作" width="150" align="center">
+        <template slot-scope="scope">
+          <el-popconfirm
+            title="确定删除吗？"
+            @confirm="delBook(scope.row)"
+            style="margin-left: 5px"
+          >
+            <el-button slot="reference" size="small" type="danger"
+              >删除</el-button
+            >
+          </el-popconfirm>
+        </template>
+      </el-table-column>
     </el-table>
   </div>
 </template>
@@ -63,6 +77,7 @@ export default {
     return {
       // Your data here
       tableData: [],
+      bookInfo: {},
     };
   },
   methods: {
@@ -73,13 +88,24 @@ export default {
       this.tableData = response.data;
     },
     nameClickHandler(row) {
-      console.log("Name clicked:", row);
       // do something with row
       this.$store.commit("setSelectedRow", row);
-      this.$router.push("/index/reading");
+      this.$router.push("/reading");
+    },
+    async delBook(row) {
+      console.log("Delete clicked:", row);
+      try {
+        const url = this.$httpUrl + "/saveBook?val=delete";
+        this.bookInfo = Object.assign({}, row);
+        const response = await this.$axios.post(url, this.bookInfo);
+        this.getMyBook();
+      } catch (error) {
+        console.error(`Error :`, error);
+      }
     },
   },
   activated() {
+    this.$store.commit("setSelectedMenu", "/bookshelf");
     this.getMyBook();
   },
   mounted() {

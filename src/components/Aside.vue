@@ -10,104 +10,113 @@
         v-show="asideWidth === '200px'"
       />
     </div>
-    <el-menu
-      router
-      style="height: 88vh; padding-top: 10px"
-      default-active="/index/search"
-    >
-      <el-menu-item
-        index="/index/search"
-        @click="changeBackgroundColor(1)"
-        :style="{ backgroundColor: itemBackgroundColor[1] }"
+
+    <div style="height: 88vh; padding-top: 10px">
+      <div
+        v-for="(menuItem, key) in menuItems"
+        :key="key"
+        class="menu"
+        @click="menuClickhandler(menuItem.path)"
+        :style="menuItem.style"
       >
-        <i class="el-icon-search"></i>
-        <span v-show="asideWidth === '200px'">搜索</span>
-      </el-menu-item>
-      <el-menu-item
-        index="/index/reading"
-        @click="changeBackgroundColor(2)"
-        :style="{ backgroundColor: itemBackgroundColor[2] }"
-      >
-        <i class="el-icon-reading"></i>
-        <span v-show="asideWidth === '200px'">阅读</span>
-      </el-menu-item>
-      <el-menu-item
-        index="/index/bookshelf"
-        @click="changeBackgroundColor(3)"
-        :style="{ backgroundColor: itemBackgroundColor[3] }"
-      >
-        <img src="../assets/bookshelf.png" alt="" style="height: 20px" />
-        <span v-show="asideWidth === '200px'" style="margin-left: 17px"
-          >书架</span
-        >
-      </el-menu-item>
-      <el-menu-item
-        index="/index/setting"
-        @click="changeBackgroundColor(4)"
-        :style="{ backgroundColor: itemBackgroundColor[4] }"
-      >
-        <i class="el-icon-setting"></i>
-        <span v-show="asideWidth === '200px'">设置</span>
-      </el-menu-item>
-    </el-menu>
+        <i :class="menuItem.icon"></i>
+        <span v-show="asideWidth === '200px'">{{ menuItem.name }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+import Vue from "vue";
 export default {
   name: "Aside",
   data() {
     return {
       // Your data here
+      menuItems: [
+        {
+          name: "搜索",
+          icon: "el-icon-search",
+          path: "/search",
+        },
+        {
+          name: "阅读",
+          icon: "el-icon-reading",
+          path: "/reading",
+        },
+        {
+          name: "书架",
+          icon: "el-icon-collection",
+          path: "/bookshelf",
+        },
+        {
+          name: "设置",
+          icon: "el-icon-setting",
+          path: "/setting",
+        },
+      ],
       asideWidth: "200px",
-      asideBackgroundColor: "transparent",
-      itemBackgroundColor: {
-        1: "",
-        2: "",
-        3: "",
-        4: "",
-      },
     };
   },
   methods: {
     // Your methods here
     toggleAside() {
       if (this.asideWidth === "200px") {
-        this.asideWidth = "70px";
-        this.asideBackgroundColor = "transparent";
+        this.asideWidth = "50px";
       } else {
         this.asideWidth = "200px";
-        this.asideBackgroundColor = "transparent";
       }
     },
-    changeBackgroundColor(index) {
-      this.itemBackgroundColor = {
-        1: "",
-        2: "",
-        3: "",
-        4: "",
-      };
-      this.itemBackgroundColor[index] = "rgb(75, 75, 75)";
+    menuClickhandler(toPath) {
+      if (this.$route.path === toPath) return;
+      this.$router.push({ path: toPath, query: { plan: "fromAside" } });
     },
   },
   mounted() {
     // Your mounted hook code here
     this.$emit("update", {
       width: this.asideWidth,
-      backgroundColor: this.asideBackgroundColor,
     });
+  },
+  created() {
+    this.menuItems.forEach((item, key) => {
+      this.$set(item, "style", {
+        backgroundColor: "#ffffff",
+        color: "#000000",
+
+        borderRadius: "2px 25px 25px 2px",
+      });
+    });
+  },
+  computed: {
+    ...mapState({
+      activedMenu: (state) => state.selectedMenu,
+    }),
   },
   watch: {
     asideWidth(newVal) {
       this.$emit("update", {
         width: newVal,
-        backgroundColor: this.asideBackgroundColor,
       });
     },
-    asideBackgroundColor(newVal) {
-      this.$emit("update", {
-        width: this.asideWidth,
-        backgroundColor: newVal,
+    activedMenu(newVal) {
+      this.menuItems.forEach((item) => {
+        if (item.path === newVal) {
+          this.$set(item, "style", {
+            backgroundColor: "rgb(75,75,75)",
+            color: "#ffffff",
+
+            borderRadius: "2px 25px 25px 2px",
+          });
+        } else {
+          this.$set(item, "style", {
+            backgroundColor: "#ffffff",
+            color: "#000000",
+
+            borderRadius: "2px 25px 25px 2px",
+          });
+        }
       });
     },
   },
@@ -117,6 +126,23 @@ export default {
 <style>
 .el-container {
   flex: 1;
+}
+
+.menu {
+  display: flex;
+  align-items: center;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  cursor: pointer;
+}
+
+.menu i {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.menu span {
+  margin-left: 10px;
 }
 
 .el-header {
@@ -151,7 +177,7 @@ export default {
   justify-content: center;
   height: 50px;
   cursor: pointer;
-  background-color: #f5f7fa;
+  background-color: #a6a5a5;
 }
 
 .toggle-aside i {

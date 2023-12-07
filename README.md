@@ -14,7 +14,7 @@ node server.js
 npm run serve
 ```
 
-在浏览器中打开http://localhost:8080即可访问
+在浏览器中打开http://localhost:8080  即可访问
 
 ### Compiles and minifies for production
 

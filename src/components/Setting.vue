@@ -18,6 +18,11 @@ export default {
   mounted() {
     // Your mounted hook code here
   },
+  activated() {
+    // Your activated hook code here
+
+    this.$store.commit("setSelectedMenu", "/setting");
+  },
 };
 </script>
 

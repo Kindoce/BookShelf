@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Welcome to the Login Page</h1>
-    <p>Please enter your credentials to log in.</p>
+    <h1>搜你想搜</h1>
+    <p>愿你终有一天能和你最爱的的人重逢</p>
     <!-- <p>{{ html }}</p> -->
     <!-- Add your login form here -->
     <el-input
@@ -11,7 +11,7 @@
       style="width: 200px; margin-right: 10px"
       @keyup.enter.native="getBookList"
     ></el-input>
-    <el-button type="primary" @click="getBookList">Login</el-button>
+    <el-button type="primary" @click="getBookList">搜索</el-button>
     <el-button type="primary" @click="test">Test</el-button>
 
     <el-table
@@ -20,7 +20,13 @@
       border
       :header-cell-style="{ background: '#f3f6fd', color: '#555' }"
       size="small"
-      style="padding-left: 5px; margin-right: auto; width: 1100px"
+      style="
+        padding-left: 5px;
+        margin-right: auto;
+        width: 1100px;
+        margin-top: 10px;
+      "
+      v-show="tableData.length > 0"
     >
       <el-table-column prop="coverUrl" label="封面" width="90">
         <template slot-scope="scope">
@@ -102,10 +108,9 @@ export default {
       });
     },
     nameClickHandler(row) {
-      console.log("Name clicked:", row);
       // do something with row
       this.$store.commit("setSelectedRow", row);
-      this.$router.push("/index/reading");
+      this.$router.push("/reading");
     },
     test() {
       let books = ["天才", "小心", "穷鬼"];
@@ -123,6 +128,10 @@ export default {
   },
   mounted() {
     // Your component mounted hook here
+  },
+  activated() {
+    // Your component activated hook here
+    this.$store.commit("setSelectedMenu", "/search");
   },
   // Your component lifecycle hooks here
 };
