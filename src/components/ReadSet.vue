@@ -1,27 +1,36 @@
 <template>
-  <div v-if="showSetting" class="setting">
+  <div v-if="showSetting" class="setting" :style="customStyle">
     <!-- <img src="../assets/cd.jpg" alt="" style="width: 250px" /> -->
     <div>
-      <span class="demonstration" style="margin-left: 120px; margin-top: 30px"
+      <span
+        class="demonstration"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 30px;
+        "
         >字体大小</span
       >
       <el-slider
-        v-model="font_size"
+        v-model="readSetting.font_size"
         :step="2"
         :max="30"
         :min="10"
         :marks="marks"
-        style="margin-left: 10px; margin-right: 10px; margin-top: 5px"
+        style="left: 45%; margin-right: 10px; margin-top: 5px"
       >
       </el-slider>
     </div>
 
     <div style="height: 50px">
-      <span class="demonstration" style="margin-left: 120px; margin-top: 80px"
+      <span
+        class="demonstration"
+        style="display: flex; align-items: center; justify-content: center"
         >左右间距</span
       >
       <el-slider
-        v-model="padding_size"
+        v-model="readSetting.padding_size"
         :step="10"
         :max="100"
         :min="0"
@@ -42,7 +51,7 @@
     >
       <span class="demonstration" style="margin-left: 10px">字体选择</span>
       <el-select
-        v-model="font_family"
+        v-model="readSetting.font_family"
         placeholder="请选择字体"
         style="margin-right: 10px; margin-left: 10px"
         size="small"
@@ -67,7 +76,7 @@
     >
       <span class="demonstration" style="margin-right: 30px">背景颜色</span>
       <el-color-picker
-        v-model="bg_color"
+        v-model="readSetting.bg_color"
         show-alpha
         :predefine="predefineColors"
       >
@@ -79,7 +88,7 @@
     >
       <span class="demonstration" style="margin-right: 30px">字体颜色</span>
       <el-color-picker
-        v-model="zt_color"
+        v-model="readSetting.zt_color"
         show-alpha
         :predefine="predefineColors"
       >
@@ -88,6 +97,7 @@
     <div
       class="color-picker-container"
       style="display: flex; justify-content: center; align-items: center"
+      v-show="showfrush"
     >
       <span class="demonstration" style="margin-right: 30px">恢复默认设置</span>
       <el-button type="danger" @click="reFlush" round size="samll"
@@ -106,16 +116,27 @@ export default {
       type: Boolean,
       default: false,
     },
+    showfrush: {
+      type: Boolean,
+      default: true,
+    },
+    customStyle: Object,
+    readSetting: {
+      type: Object,
+      default: () => {
+        return {
+          font_size: 18,
+          padding_size: 10,
+          font_family: "SimSun",
+          bg_color: "#ffffff",
+          zt_color: "#000000",
+        };
+      },
+    },
   },
   data() {
     return {
       // Your data properties here
-      font_size: 18,
-      padding_size: 10,
-      font_family: "SimSun",
-      bg_color: "#ffffff",
-      zt_color: "#000000",
-      add: false,
       marks: {
         10: "10",
         12: "12",
@@ -170,97 +191,29 @@ export default {
   methods: {
     // Your methods here
     reFlush() {
-      this.font_size = 18;
-      this.padding_size = 10;
-      this.font_family = "SimSun";
-      this.bg_color = "#ffffff";
-      this.zt_color = "#000000";
-      this.add = false;
+      this.readSetting.font_size = 18;
+      this.readSetting.padding_size = 10;
+      this.readSetting.font_family = "SimSun";
+      this.readSetting.bg_color = "#ffffff";
+      this.readSetting.zt_color = "#000000";
     },
   },
   mounted() {
     // Your mounted hook code here
   },
   watch: {
-    font_size(newVal) {
-      this.$emit("update", {
-        font_size: newVal,
-        padding_size: this.padding_size,
-        font_family: this.font_family,
-        bg_color: this.bg_color,
-        zt_color: this.zt_color,
-        add: this.add,
-      });
+    readSetting: {
+      handler: function (newVal, oldVal) {
+        this.$emit("update", newVal);
+      },
+      deep: true,
     },
-    padding_size(newVal) {
-      this.$emit("update", {
-        padding_size: newVal,
-        font_size: this.font_size,
-        font_family: this.font_family,
-        bg_color: this.bg_color,
-        zt_color: this.zt_color,
-        add: this.add,
-      });
-    },
-    font_family(newVal) {
-      this.$emit("update", {
-        font_family: newVal,
-        font_size: this.font_size,
-        padding_size: this.padding_size,
-        bg_color: this.bg_color,
-        zt_color: this.zt_color,
-        add: this.add,
-      });
-    },
-    bg_color(newVal) {
-      this.$emit("update", {
-        bg_color: newVal,
-        font_size: this.font_size,
-        padding_size: this.padding_size,
-        font_family: this.font_family,
-        zt_color: this.zt_color,
-        add: this.add,
-      });
-    },
-    zt_color(newVal) {
-      this.$emit("update", {
-        zt_color: newVal,
-        font_size: this.font_size,
-        padding_size: this.padding_size,
-        font_family: this.font_family,
-        bg_color: this.bg_color,
-        add: this.add,
-      });
-    },
-    add(newVal) {
-      this.$emit("update", {
-        add: newVal,
-        font_size: this.font_size,
-        padding_size: this.padding_size,
-        font_family: this.font_family,
-        bg_color: this.bg_color,
-        zt_color: this.zt_color,
-      });
-    },
-    // Your watch properties here
   },
 };
 </script>
 
 <style scoped>
 /* Your component styles here */
-.setting {
-  position: absolute;
-  top: 40px;
-  right: 0;
-  width: 300px; /* adjust as needed */
-  height: 70vh; /* adjust as needed */
-  background-color: white; /* semi-transparent background */
-  /* other styles as needed */
-  z-index: 1; /* make sure it's above the content */
-  border-radius: 10px 10px 10px 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add shadow to the setting */
-}
 .setting > * {
   position: relative;
   margin-top: 20px;

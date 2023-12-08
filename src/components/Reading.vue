@@ -53,6 +53,9 @@
     </div>
     <ReadSet
       :showSetting="showSetting"
+      :showfrush="true"
+      :customStyle="ReadSetStyle"
+      :readSetting="booksettings"
       ref="setting"
       @update="handleUpdateData"
       v-click-outside="toggleSetting"
@@ -99,19 +102,36 @@ export default {
   data() {
     return {
       // Your data properties here
-      bookdData: this.$store.state.selectedRow,
+      bookdData: {
+        name: "",
+        bookUrl: "",
+      },
       showDirectory: false,
       showSetting: false,
       chapterlist: [],
       bookInfo: {},
-      content: "",
+      content: "<h1>请选择书架里的书或者搜索之后再来看吧</h1>",
       curUrl: "",
       curChapter: "",
-      font_size: 18,
-      bg_color: "#ffffff",
-      zt_color: "#000000",
-      padding_size: 10,
-      font_family: "SimSun",
+      booksettings: {
+        font_size: 18,
+        bg_color: "#ffffff",
+        zt_color: "#000000",
+        padding_size: 10,
+        font_family: "SimSun",
+      },
+      bookSource_family: "1",
+      ReadSetStyle: {
+        position: "absolute",
+        top: "40px",
+        right: "0",
+        width: "300px",
+        height: "70vh",
+        backgroundColor: "white",
+        zIndex: 1,
+        borderRadius: "10px 10px 10px 10px",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
+      },
     };
   },
   methods: {
@@ -134,11 +154,19 @@ export default {
     },
     getChapterList() {
       const url = this.bookdData.bookUrl;
+      if (url === "") {
+        this.$message({
+          message: "暂无书籍",
+          type: "warning",
+        });
+        return;
+      }
       this.postChapterUrl(url, { url }).then((data) => {
         this.chapterlist = data;
       });
     },
     chapterClickHandler(row) {
+      this.content = "<h1>正在加载中...</h1>";
       this.curUrl = row.chapterUrl;
       this.curChapter = row.chapterName;
       this.getChapterContent();
@@ -171,6 +199,15 @@ export default {
       });
     },
     getNextChapter() {
+      if (this.chapterlist.length === 0) {
+        this.$message({
+          message: "暂无书籍",
+          type: "warning",
+        });
+        return;
+      }
+      let tmpContent = this.content;
+      this.content = "<h1>正在加载中...</h1>";
       let index = this.chapterlist.findIndex(
         (item) => item.chapterUrl === this.curUrl
       );
@@ -179,6 +216,7 @@ export default {
         this.curChapter = this.chapterlist[index + 1].chapterName;
         this.getChapterContent();
       } else {
+        this.content = tmpContent;
         this.$message({
           message: "已经是最后一章了",
           type: "warning",
@@ -186,6 +224,15 @@ export default {
       }
     },
     getUpperChapter() {
+      if (this.chapterlist.length === 0) {
+        this.$message({
+          message: "暂无书籍",
+          type: "warning",
+        });
+        return;
+      }
+      let tmpContent = this.content;
+      this.content = "<h1>正在加载中...</h1>";
       let index = this.chapterlist.findIndex(
         (item) => item.chapterUrl === this.curUrl
       );
@@ -194,6 +241,7 @@ export default {
         this.curChapter = this.chapterlist[index - 1].chapterName;
         this.getChapterContent();
       } else {
+        this.content = tmpContent;
         this.$message({
           message: "已经是第一章了",
           type: "warning",
@@ -223,20 +271,21 @@ export default {
       }
     },
     handleUpdateData(newVal) {
-      this.font_size = newVal.font_size;
-      this.bg_color = newVal.bg_color;
-      this.zt_color = newVal.zt_color;
-      this.padding_size = newVal.padding_size;
-      this.font_family = newVal.font_family;
+      this.booksettings = newVal;
     },
   },
   activated() {
     // Your activated hook code here
 
     this.$store.commit("setSelectedMenu", "/reading");
+    let bookSource_family = this.$store.state.selectedBookSource;
+    let bookSettings = this.$store.state.selectedSettings;
+    this.booksettings = bookSettings;
+    this.bookSource_family = bookSource_family;
     if (this.$route.query.plan === "fromAside") {
       return;
     }
+    this.content = "<h1>正在加载中...</h1>";
     this.bookdData = this.$store.state.selectedRow;
     if (this.bookdData != null) {
       this.addToBookShelf("find");
@@ -264,19 +313,19 @@ export default {
   computed: {
     contentStyle() {
       return {
-        fontSize: this.font_size + "px",
-        backgroundColor: this.bg_color,
-        color: this.zt_color,
-        paddingLeft: this.padding_size * 5 + "px", // 设置左偏移
-        paddingRight: this.padding_size * 5 + "px", // 设置右偏移
-        fontFamily: this.font_family,
+        fontSize: this.booksettings.font_size + "px",
+        backgroundColor: this.booksettings.bg_color,
+        color: this.booksettings.zt_color,
+        paddingLeft: this.booksettings.padding_size * 5 + "px", // 设置左偏移
+        paddingRight: this.booksettings.padding_size * 5 + "px", // 设置右偏移
+        fontFamily: this.booksettings.font_family,
       };
     },
     spanStyle() {
       return {
         fontSize: "18px",
-        color: this.zt_color,
-        fontFamily: this.font_family,
+        color: this.booksettings.zt_color,
+        fontFamily: this.booksettings.font_family,
       };
     },
   },

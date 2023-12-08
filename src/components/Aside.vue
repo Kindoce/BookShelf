@@ -177,7 +177,7 @@ export default {
   justify-content: center;
   height: 50px;
   cursor: pointer;
-  background-color: #a6a5a5;
+  background-color: #ffffff;
 }
 
 .toggle-aside i {

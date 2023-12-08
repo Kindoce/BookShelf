@@ -19,9 +19,9 @@
     "lastChapter": "流浪时代",
     "name": "流浪地球",
     "coverUrl": "http://www.zwduxs.com/files/article/image/29/29332/29332s.jpg",
-    "curUrl": "/29_29332/9999993.html",
-    "curChapter": "叛乱",
-    "chapterIndex": 2
+    "curUrl": "/29_29332/9999991.html",
+    "curChapter": "刹车时代",
+    "chapterIndex": 0
   },
   {
     "author": "唐家三少",
@@ -31,9 +31,9 @@
     "lastChapter": "第二百三十六章 大结局，最后一个条件（全书完）",
     "name": "斗罗大陆",
     "coverUrl": "http://www.zwduxs.com/files/article/image/26/26022/26022s.jpg",
-    "curUrl": "/26_26022/8249069.html",
-    "curChapter": "第十五章 千年魂环之技，白虎金刚变(一)",
-    "chapterIndex": 67
+    "curUrl": "/26_26022/8249048.html",
+    "curChapter": "第十章 第一魂环技能(五)",
+    "chapterIndex": 47
   },
   {
     "author": "刘慈欣",
@@ -190,5 +190,29 @@
     "curUrl": "/39_39693/14698861.html",
     "curChapter": "第一章 巫师世界",
     "chapterIndex": 0
+  },
+  {
+    "author": "七月新番",
+    "bookUrl": "http://www.zwduxs.com/49_49619/",
+    "words": "2430K",
+    "updateTime": "20-10-27",
+    "lastChapter": "新书，来了！",
+    "name": "汉阙",
+    "coverUrl": "http://www.zwduxs.com/files/article/image/49/49619/49619s.jpg",
+    "curUrl": "/49_49619/18609980.html",
+    "curChapter": "第3章 任少卿",
+    "chapterIndex": 2
+  },
+  {
+    "author": "远瞳",
+    "bookUrl": "http://www.zwduxs.com/26_26321/",
+    "words": "5831K",
+    "updateTime": "18-12-27",
+    "lastChapter": "新书《黎明之剑》已经发布",
+    "name": "异常生物见闻录",
+    "coverUrl": "http://www.zwduxs.com/files/article/image/26/26321/26321s.jpg",
+    "curUrl": "/26_26321/8421971.html",
+    "curChapter": "第二十五章 关于异类",
+    "chapterIndex": 24
   }
 ]
