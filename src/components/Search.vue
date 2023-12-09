@@ -12,12 +12,12 @@
       @keyup.enter.native="getBookList"
     ></el-input>
     <el-button type="primary" @click="getBookList">搜索</el-button>
-    <el-button type="primary" @click="test">Test</el-button>
 
     <el-table
       :data="tableData"
       stripe
       border
+      highlight-current-row
       :header-cell-style="{ background: '#f3f6fd', color: '#555' }"
       size="small"
       style="
@@ -27,6 +27,7 @@
         margin-top: 10px;
       "
       v-show="tableData.length > 0"
+      @cell-click="nameClickHandler"
     >
       <el-table-column prop="coverUrl" label="封面" width="90">
         <template slot-scope="scope">
@@ -38,11 +39,12 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="书名" width="180" align="center">
-        <template slot-scope="scope">
-          <div @click="nameClickHandler(scope.row)">{{ scope.row.name }}</div>
-        </template></el-table-column
-      >
+      <el-table-column
+        prop="name"
+        label="书名"
+        width="180"
+        align="center"
+      ></el-table-column>
       <el-table-column prop="author" label="作者" width="150">
       </el-table-column>
       <!-- <el-table-column prop="bookUrl" label="书Url" width="250">
@@ -107,23 +109,12 @@ export default {
         this.tableData = res;
       });
     },
-    nameClickHandler(row) {
+    nameClickHandler(row, column, cell, event) {
       // do something with row
-      this.$store.commit("setSelectedRow", row);
-      this.$router.push("/reading");
-    },
-    test() {
-      let books = ["天才", "小心", "穷鬼"];
-      let i = 0;
-      let intervalId = setInterval(() => {
-        this.book_name = books[i];
-        console.log(this.book_name);
-        this.getBookList();
-        i++;
-        if (i >= books.length) {
-          clearInterval(intervalId);
-        }
-      }, 5000);
+      if (column.label === "书名") {
+        this.$store.commit("setSelectedRow", row);
+        this.$router.push("/reading");
+      }
     },
   },
   mounted() {

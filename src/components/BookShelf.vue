@@ -6,10 +6,12 @@
       :data="tableData"
       stripe
       border
+      highlight-current-row
       :header-cell-style="{ background: '#f3f6fd', color: '#555' }"
       size="small"
       style="padding-left: 5px; margin-right: auto; width: 1200px"
       v-show="tableData.length > 0"
+      @cell-click="nameClickHandler"
     >
       <el-table-column prop="coverUrl" label="封面" width="90" align="center">
         <template slot-scope="scope">
@@ -21,11 +23,12 @@
           />
         </template>
       </el-table-column>
-      <el-table-column prop="name" label="书名" width="180" align="center">
-        <template slot-scope="scope">
-          <div @click="nameClickHandler(scope.row)">{{ scope.row.name }}</div>
-        </template></el-table-column
-      >
+      <el-table-column
+        prop="name"
+        label="书名"
+        width="180"
+        align="center"
+      ></el-table-column>
       <el-table-column prop="author" label="作者" width="120" align="center">
       </el-table-column>
       <!-- <el-table-column prop="bookUrl" label="书Url" width="250">
@@ -87,10 +90,12 @@ export default {
       const response = await this.$axios.get(url);
       this.tableData = response.data;
     },
-    nameClickHandler(row) {
+    nameClickHandler(row, column, cell, event) {
       // do something with row
-      this.$store.commit("setSelectedRow", row);
-      this.$router.push("/reading");
+      if (column.label === "书名") {
+        this.$store.commit("setSelectedRow", row);
+        this.$router.push("/reading");
+      }
     },
     async delBook(row) {
       console.log("Delete clicked:", row);

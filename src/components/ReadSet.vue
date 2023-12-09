@@ -100,7 +100,7 @@
       v-show="showfrush"
     >
       <span class="demonstration" style="margin-right: 30px">恢复默认设置</span>
-      <el-button type="danger" @click="reFlush" round size="samll"
+      <el-button type="danger" @click="reFlush" round size="medium"
         >恢复</el-button
       >
     </div>

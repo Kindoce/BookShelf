@@ -2,6 +2,7 @@
 
 ## Project setup
 ```
+#建议 node 版本 16
 npm install
 ```
 

@@ -183,9 +183,5 @@ export default {
 .toggle-aside i {
   font-size: 20px;
 }
-
-span {
-  margin-left: 10px;
-}
 </style>
 

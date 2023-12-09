@@ -39,6 +39,7 @@
                 icon="el-icon-refresh-right"
                 @click="getChapterList"
                 round
+                size="medium"
                 >刷新</el-button
               >
             </template>
@@ -316,8 +317,8 @@ export default {
         fontSize: this.booksettings.font_size + "px",
         backgroundColor: this.booksettings.bg_color,
         color: this.booksettings.zt_color,
-        paddingLeft: this.booksettings.padding_size * 5 + "px", // 设置左偏移
-        paddingRight: this.booksettings.padding_size * 5 + "px", // 设置右偏移
+        paddingLeft: this.booksettings.padding_size * 0.4 + "%", // 设置左偏移
+        paddingRight: this.booksettings.padding_size * 0.4 + "%", // 设置右偏移
         fontFamily: this.booksettings.font_family,
       };
     },
