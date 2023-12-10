@@ -27,7 +27,7 @@ let baYi = (dom, val) => {
         var chapters = chapterList.map(function () {
             var $row = $(this);
             var chapter = {};
-            chapter.chapterUrl = $row.find('a').attr('href');
+            chapter.chapterUrl = 'http://www.zwduxs.com' + $row.find('a').attr('href');
             chapter.chapterName = $row.find('a').text();
             return chapter;
         }).get();
@@ -67,7 +67,7 @@ let SF = (dom, val) => {
         var chapters = chapterList.map(function () {
             var $row = $(this);
             var chapter = {};
-            chapter.chapterUrl = $row.attr('href');
+            chapter.chapterUrl = 'https://book.sfacg.com' + $row.attr('href');
             chapter.chapterName = $row.text();
             return chapter;
         }).get();
@@ -129,12 +129,6 @@ let getRes = async (url, bookSource, val, header) => {
     }
     if (bookSource == '📚 SF轻小说' && val == 'chapter') {
         url = url + '/MainIndex/';
-    }
-    if (bookSource == '八一中文①' && val == 'content') {
-        url = 'http://www.zwduxs.com' + url;
-    }
-    if (bookSource == '📚 SF轻小说' && val == 'content') {
-        url = 'https://book.sfacg.com' + url;
     }
     if (bookSource == '9x阅读器' && val == 'search') {
         url = 'https://novel-api.elklk.cn' + url;

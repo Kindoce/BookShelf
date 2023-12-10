@@ -45,7 +45,7 @@
       <el-table-column
         prop="updateTime"
         label="最后更新时间"
-        width="90"
+        width="110"
         align="center"
       >
       </el-table-column>
@@ -59,11 +59,11 @@
       <el-table-column
         prop="bookSource_family"
         label="书源"
-        width="100"
+        width="120"
         align="center"
       >
       </el-table-column>
-      <el-table-column prop="operate" label="操作" width="150" align="center">
+      <el-table-column prop="operate" label="操作" width="110" align="center">
         <template slot-scope="scope">
           <el-popconfirm
             title="确定删除吗？"
