@@ -2,9 +2,16 @@ const axios = require('axios');
 const fs = require('fs');
 const jsdom = require("jsdom");
 
+const { getSearchBookList, getChapterList, getContent } = require('./bookSourceManage');
+const { get } = require('http');
+
 const { JSDOM } = jsdom;
 const dataPath = './server/bookshelf.json';
 const settingsPath = './server/settings.json';
+const syPath = './server/sy.json';
+
+let syData = fs.readFileSync(syPath, 'utf-8');
+let obj = JSON.parse(syData);
 
 module.exports = function (app) {
     app.get('/fetchUrl', async (req, res) => {
@@ -27,68 +34,34 @@ module.exports = function (app) {
         }
     });
 
-
-    app.post('/postData', async (req, res) => {
+    app.get('/getSearchBook', async (req, res) => {
         // 处理post请求的逻辑
-        const data = req.body;
-        const url = req.query.url;
+        const bookName = req.query.bookName;
+        const bookSource = req.query.bookSource;
         try {
-            const response = await axios.get(url);
-            const html = response.data;
-            const dom = new JSDOM(html);
-            const $ = require('jquery')(dom.window);
-            var bookList = $(dom.window.document).find('.grid tr:not(:first-child)');
-            var books = bookList.map(function () {
-                var $row = $(this);
-                var book = {};
-                book.author = $row.find('td').eq(2).text();
-                book.bookUrl = $row.find('td').eq(0).find('a').attr('href');
-                book.words = $row.find('td').eq(3).text();
-                book.updateTime = $row.find('td').eq(4).text();
-                book.lastChapter = $row.find('td').eq(1).find('a').text();
-                book.name = $row.find('td').eq(0).find('a').text().replace(/（.*|（.*|免费阅读|全文.*阅读|最新章节|笔趣阁|小说/g, '');
-                var id = book.bookUrl.match(/(\d+)\/?$/)[1];
-                var iid = parseInt(id / 1000);
-                book.coverUrl = 'http://www.zwduxs.com/files/article/image/' + iid + '/' + id + '/' + id + 's.jpg';
-                return book;
-            }).get();
+            books = await getSearchBookList(obj, bookName, bookSource);
             res.send(books);
         } catch (error) {
             res.status(500).send(JSON({ message: error.message }));
         }
     });
 
-    app.post('/postChapter', async (req, res) => {
-        const data = req.body;
+    app.get('/getChapterList', async (req, res) => {
         const url = req.query.url;
+        const bookSource = req.query.bookSource;
         try {
-            const response = await axios.get(url);
-            const html = response.data;
-            const dom = new JSDOM(html);
-            const $ = require('jquery')(dom.window);
-            var chapterList = $(dom.window.document).find('#list dd');
-            var chapters = chapterList.map(function () {
-                var $row = $(this);
-                var chapter = {};
-                chapter.chapterUrl = $row.find('a').attr('href');
-                chapter.chapterName = $row.find('a').text();
-                return chapter;
-            }).get();
+            chapters = await getChapterList(url, bookSource);
             res.send(chapters);
         } catch (error) {
             res.status(500).send(JSON.stringify({ message: error.message }));
         }
     });
 
-    app.post('/postChapterContent', async (req, res) => {
-        const data = req.body;
+    app.get('/getContent', async (req, res) => {
         const url = req.query.url;
+        const bookSource = req.query.bookSource;
         try {
-            const response = await axios.get(url);
-            const html = response.data;
-            const dom = new JSDOM(html);
-            const $ = require('jquery')(dom.window);
-            var content = $(dom.window.document).find('#content').text();
+            content = await getContent(url, bookSource);
             res.send(content);
         } catch (error) {
             res.status(500).send(JSON.stringify({ message: error.message }));
@@ -104,7 +77,7 @@ module.exports = function (app) {
             let found = false;
             let item = {};
             for (let i = 0; i < obj.length; i++) {
-                if (obj[i].name === data.name) {
+                if (obj[i].name === data.name && obj[i].bookSource_family === data.bookSource_family && obj[i].author === data.author) {
                     found = true;
                     item = obj[i];
                     if (val == 'add') {

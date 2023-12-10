@@ -17,13 +17,13 @@
           v-model="bookSource_family"
           placeholder="请选择书源"
           style="margin-right: 10px; margin-left: 10px"
-          size="small"
+          size="medium"
         >
           <el-option
             v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            :key="item"
+            :label="item"
+            :value="item"
           >
           </el-option>
         </el-select>
@@ -53,7 +53,6 @@ export default {
     return {
       // Your data properties here
       showSetting: true,
-      bookSource_family: "1",
       bookSettings: {
         font_size: 18,
         padding_size: 10,
@@ -67,26 +66,9 @@ export default {
         rleft: "0",
         width: "45%",
         height: "100%",
-        background: "#fff",
       },
-      options: [
-        {
-          value: "1",
-          label: "书源1",
-        },
-        {
-          value: "2",
-          label: "书源2",
-        },
-        {
-          value: "3",
-          label: "书源3",
-        },
-        {
-          value: "4",
-          label: "书源4",
-        },
-      ],
+      bookSource_family: "八一中文①",
+      options: ["八一中文①", "八一中文②", "八一中文③", "八一中文④"],
     };
   },
   methods: {

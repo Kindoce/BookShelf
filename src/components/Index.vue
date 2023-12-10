@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" :style="{ backgroundColor: bg_color }">
     <el-container style="height: 97vh">
       <el-aside
         width="200px"
@@ -12,7 +12,7 @@
       </el-aside>
       <el-main>
         <keep-alive>
-          <router-view></router-view>
+          <router-view @update="handleUpdateStyle"></router-view>
         </keep-alive>
       </el-main>
     </el-container>
@@ -28,11 +28,14 @@ export default {
     Aside,
   },
   data() {
-    return { asideWidth: "" };
+    return { asideWidth: "", bg_color: "#ffffff" };
   },
   methods: {
     updateAside(data) {
       this.asideWidth = data.width;
+    },
+    handleUpdateStyle(data) {
+      this.bg_color = data.bg_color;
     },
   },
 };
@@ -80,7 +83,6 @@ export default {
   justify-content: center;
   height: 50px;
   cursor: pointer;
-  background-color: #f5f7fa;
 }
 
 .toggle-aside i {

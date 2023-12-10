@@ -11,6 +11,20 @@
       style="width: 200px; margin-right: 10px"
       @keyup.enter.native="getBookList"
     ></el-input>
+    <el-select
+      v-model="bookSource_family"
+      placeholder="请选择书源"
+      style="margin-right: 10px; margin-left: 10px"
+      size="medium"
+    >
+      <el-option
+        v-for="item in options"
+        :key="item"
+        :label="item"
+        :value="item"
+      >
+      </el-option>
+    </el-select>
     <el-button type="primary" @click="getBookList">搜索</el-button>
 
     <el-table
@@ -77,42 +91,31 @@ export default {
       html: "",
       book_name: "",
       tableData: [],
+      bookSource_family: "八一中文①",
+      options: ["八一中文①", "📚 SF轻小说", "9x阅读器"],
     };
   },
   methods: {
     // Add your component methods here
-    async postUrl(url, rule) {
+    async getBookList() {
       try {
-        const toServerUrl = this.$httpUrl + "/postData?url=" + url;
-        const response = await this.$axios.post(toServerUrl, rule);
-        return response.data;
+        const toServerUrl =
+          this.$httpUrl +
+          "/getSearchBook?bookName=" +
+          this.book_name +
+          "&bookSource=" +
+          this.bookSource_family;
+        const response = await this.$axios.get(toServerUrl);
+        this.tableData = response.data;
       } catch (error) {
         console.error(`Error posting URL: ${url}`, error);
-        return null;
       }
-    },
-    getBookList() {
-      const url =
-        "http://www.zwduxs.com/modules/article/search.php?searchkey=" +
-        this.book_name +
-        "&searchtype=articlename";
-      var ruleSearch = {
-        author: "tag.td.2@text",
-        bookList: "class.grid@tag.tr!0",
-        bookUrl: "tag.td.0@tag.a@href",
-        coverUrl:
-          "tag.td.0@tag.a@href<js>\nvar id = result.match(/(\\d+)\\/?$/)[1];\nvar iid = parseInt(id/1000);\n'http://www.zwduxs.com/files/article/image/'+iid+'/'+id+'/'+id+'s.jpg';\n</js>",
-        lastChapter: "tag.td.1@tag.a@text",
-        name: "tag.td.0@tag.a@text##\\（.*|\\(.*|免费阅读|全文.*阅读|最新章节|笔趣阁|小说",
-      };
-      this.postUrl(url, ruleSearch).then((res) => {
-        this.tableData = res;
-      });
     },
     nameClickHandler(row, column, cell, event) {
       // do something with row
       if (column.label === "书名") {
         this.$store.commit("setSelectedRow", row);
+        this.$store.commit("setSelectedBookSource", this.bookSource_family);
         this.$router.push("/reading");
       }
     },

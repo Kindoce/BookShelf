@@ -121,14 +121,13 @@ export default {
         padding_size: 10,
         font_family: "SimSun",
       },
-      bookSource_family: "1",
+      bookSource_family: "",
       ReadSetStyle: {
         position: "absolute",
         top: "40px",
         right: "0",
         width: "300px",
         height: "70vh",
-        backgroundColor: "white",
         zIndex: 1,
         borderRadius: "10px 10px 10px 10px",
         boxShadow: "0 0 10px rgba(0, 0, 0, 0.2)",
@@ -143,17 +142,7 @@ export default {
     toggleSetting() {
       this.showSetting = !this.showSetting;
     },
-    async postChapterUrl(chapterUrl, rule) {
-      try {
-        const toServerUrl = this.$httpUrl + "/postChapter?url=" + chapterUrl;
-        const response = await this.$axios.post(toServerUrl, rule);
-        return response.data;
-      } catch (error) {
-        console.error(`Error posting URL: ${chapterUrl}`, error);
-        return null;
-      }
-    },
-    getChapterList() {
+    async getChapterList() {
       const url = this.bookdData.bookUrl;
       if (url === "") {
         this.$message({
@@ -162,9 +151,19 @@ export default {
         });
         return;
       }
-      this.postChapterUrl(url, { url }).then((data) => {
-        this.chapterlist = data;
-      });
+      try {
+        const toServerUrl =
+          this.$httpUrl +
+          "/getChapterList?url=" +
+          url +
+          "&bookSource=" +
+          this.bookSource_family;
+        const response = await this.$axios.get(toServerUrl);
+        this.chapterlist = response.data;
+      } catch (error) {
+        console.error(`Error posting URL: ${url}`, error);
+        return null;
+      }
     },
     chapterClickHandler(row) {
       this.content = "<h1>正在加载中...</h1>";
@@ -172,14 +171,15 @@ export default {
       this.curChapter = row.chapterName;
       this.getChapterContent();
     },
-    async postChapterContent(conUrl, rule) {
+    async getContent(conUrl) {
       try {
         const toServerUrl =
           this.$httpUrl +
-          "/postChapterContent?url=" +
-          "http://www.zwduxs.com" +
-          conUrl;
-        const response = await this.$axios.post(toServerUrl, rule);
+          "/getContent?url=" +
+          conUrl +
+          "&bookSource=" +
+          this.bookSource_family;
+        const response = await this.$axios.get(toServerUrl);
         this.addToBookShelf("add");
         return response.data;
       } catch (error) {
@@ -189,7 +189,7 @@ export default {
     },
     getChapterContent() {
       const url = this.curUrl;
-      this.postChapterContent(url, { url }).then((data) => {
+      this.getContent(url).then((data) => {
         data = data
           .replace(/\s{2,}/g, "\n\n")
           .replace(/\n/g, "<br>&nbsp;&nbsp;");
@@ -210,7 +210,7 @@ export default {
       let tmpContent = this.content;
       this.content = "<h1>正在加载中...</h1>";
       let index = this.chapterlist.findIndex(
-        (item) => item.chapterUrl === this.curUrl
+        (item) => item.chapterName === this.curChapter
       );
       if (index < this.chapterlist.length - 1) {
         this.curUrl = this.chapterlist[index + 1].chapterUrl;
@@ -235,7 +235,7 @@ export default {
       let tmpContent = this.content;
       this.content = "<h1>正在加载中...</h1>";
       let index = this.chapterlist.findIndex(
-        (item) => item.chapterUrl === this.curUrl
+        (item) => item.chapterName === this.curChapter
       );
       if (index > 0) {
         this.curUrl = this.chapterlist[index - 1].chapterUrl;
@@ -258,6 +258,7 @@ export default {
         this.bookInfo.chapterIndex = this.chapterlist.findIndex(
           (item) => item.chapterUrl === this.curUrl
         );
+        this.bookInfo.bookSource_family = this.bookSource_family;
         const response = await this.$axios.post(url, this.bookInfo);
         if (val === "find") {
           this.add = response.data.found;
@@ -279,16 +280,15 @@ export default {
     // Your activated hook code here
 
     this.$store.commit("setSelectedMenu", "/reading");
-    let bookSource_family = this.$store.state.selectedBookSource;
     let bookSettings = this.$store.state.selectedSettings;
     this.booksettings = bookSettings;
-    this.bookSource_family = bookSource_family;
     if (this.$route.query.plan === "fromAside") {
       return;
     }
     this.content = "<h1>正在加载中...</h1>";
     this.bookdData = this.$store.state.selectedRow;
     if (this.bookdData != null) {
+      this.bookSource_family = this.$store.state.selectedBookSource;
       this.addToBookShelf("find");
       this.getChapterList();
     }
@@ -309,6 +309,12 @@ export default {
         }
       },
       immediate: true,
+    },
+    booksettings: {
+      handler(newVal) {
+        this.$emit("update", newVal);
+      },
+      deep: true,
     },
   },
   computed: {

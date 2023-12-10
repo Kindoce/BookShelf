@@ -36,7 +36,7 @@
       <el-table-column
         prop="lastChapter"
         label="最后一章"
-        width="250"
+        width="190"
         align="center"
       >
       </el-table-column>
@@ -45,14 +45,21 @@
       <el-table-column
         prop="updateTime"
         label="最后更新时间"
-        width="120"
+        width="90"
         align="center"
       >
       </el-table-column>
       <el-table-column
         prop="curChapter"
         label="当前阅读"
-        width="200"
+        width="190"
+        align="center"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="bookSource_family"
+        label="书源"
+        width="100"
         align="center"
       >
       </el-table-column>
@@ -94,6 +101,7 @@ export default {
       // do something with row
       if (column.label === "书名") {
         this.$store.commit("setSelectedRow", row);
+        this.$store.commit("setSelectedBookSource", row.bookSource_family);
         this.$router.push("/reading");
       }
     },

@@ -82,7 +82,6 @@ export default {
   created() {
     this.menuItems.forEach((item, key) => {
       this.$set(item, "style", {
-        backgroundColor: "#ffffff",
         color: "#000000",
 
         borderRadius: "2px 25px 25px 2px",
@@ -111,7 +110,6 @@ export default {
           });
         } else {
           this.$set(item, "style", {
-            backgroundColor: "#ffffff",
             color: "#000000",
 
             borderRadius: "2px 25px 25px 2px",
@@ -177,7 +175,6 @@ export default {
   justify-content: center;
   height: 50px;
   cursor: pointer;
-  background-color: #ffffff;
 }
 
 .toggle-aside i {
