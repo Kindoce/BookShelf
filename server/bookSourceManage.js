@@ -126,14 +126,11 @@ let NineX = (result, val) => {
 let getRes = async (url, bookSource, val, header) => {
     if (url == '') {
         return null;
-    }
-    if (bookSource == '📚 SF轻小说' && val == 'chapter') {
+    } else if (bookSource == '📚 SF轻小说' && val == 'chapter') {
         url = url + '/MainIndex/';
-    }
-    if (bookSource == '9x阅读器' && val == 'search') {
+    } else if (bookSource == '9x阅读器' && val == 'search') {
         url = 'https://novel-api.elklk.cn' + url;
-    }
-    if (bookSource == '9x阅读器' && val == 'chapter') {
+    } else if (bookSource == '9x阅读器' && val == 'chapter') {
         id = url.split('id=')[1];
         url = 'https://novel-api.elklk.cn//cdn/book/chapterList/' + id + '.html'
     }

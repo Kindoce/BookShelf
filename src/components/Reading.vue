@@ -210,7 +210,7 @@ export default {
       let tmpContent = this.content;
       this.content = "<h1>正在加载中...</h1>";
       let index = this.chapterlist.findIndex(
-        (item) => item.chapterName === this.curChapter
+        (item) => item.chapterUrl === this.curUrl
       );
       if (index < this.chapterlist.length - 1) {
         this.curUrl = this.chapterlist[index + 1].chapterUrl;
@@ -235,7 +235,7 @@ export default {
       let tmpContent = this.content;
       this.content = "<h1>正在加载中...</h1>";
       let index = this.chapterlist.findIndex(
-        (item) => item.chapterName === this.curChapter
+        (item) => item.chapterUrl === this.curUrl
       );
       if (index > 0) {
         this.curUrl = this.chapterlist[index - 1].chapterUrl;
