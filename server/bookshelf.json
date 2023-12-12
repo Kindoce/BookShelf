@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "author": "鲁迅",
+    "bookUrl": "https://novel-api.elklk.cn/api/book-info?id=430405&source_id=1",
+    "updateTime": "",
+    "lastChapter": "",
+    "name": "呐喊",
+    "coverUrl": "https://novelres.qwezxc4.cn/431/430405.jpg",
+    "curUrl": "https://novel-api.elklk.cn/cdn/book/content/430405/2182322.html",
+    "curChapter": "阿Q正传",
+    "chapterIndex": 8,
+    "bookSource_family": "9x阅读器"
+  },
+  {
+    "author": "鲁迅",
+    "bookUrl": "http://www.zwduxs.com/110_110899/",
+    "words": "221K",
+    "updateTime": "15-11-20",
+    "lastChapter": "第24章  《农夫》译者附记",
+    "name": "译文序跋集",
+    "coverUrl": "http://www.zwduxs.com/files/article/image/110/110899/110899s.jpg",
+    "curUrl": "http://www.zwduxs.com/110_110899/39299824.html",
+    "curChapter": "第2章  《域外小说集》",
+    "chapterIndex": 1,
+    "bookSource_family": "八一中文①"
+  }
+]

@@ -13,7 +13,8 @@ import router from './router';
 import store from './store';
 
 Vue.prototype.$axios = axios;
-Vue.prototype.$httpUrl = 'http://127.0.0.1:3000'
+
+Vue.prototype.$httpUrl = 'http://'+window.location.hostname+':3000'
 
 Vue.config.productionTip = false
 
