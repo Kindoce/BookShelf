@@ -14,6 +14,7 @@ import store from './store';
 
 Vue.prototype.$axios = axios;
 
+console.log(window.location.hostname);
 Vue.prototype.$httpUrl = 'http://'+window.location.hostname+':3000'
 
 Vue.config.productionTip = false
